@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Asdo.Mandala2014.Logic.Core
+﻿namespace Asdo.Mandala2014.Logic.Core
 {
+    using System;
+
     public class LineEquation : ILineEquation
     {
-        private double k;
-        private double b;
+        private readonly double k;
+        private readonly double b;
 
         public LineEquation(ILine line)
         {
@@ -28,7 +25,7 @@ namespace Asdo.Mandala2014.Logic.Core
 
         public double Eval(double x)
         {
-            throw new NotImplementedException();
+            return K * x + B;
         }
     }
 }

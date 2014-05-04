@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Asdo.Mandala2014.Logic.Extentions;
-
-namespace Asdo.Mandala2014.Logic.Core
+﻿namespace Asdo.Mandala2014.Logic.Core
 {
+    using Asdo.Mandala2014.Logic.Extentions;
+
     public sealed class Line : ILine
     {
         private readonly IPoint start;
@@ -30,43 +25,35 @@ namespace Asdo.Mandala2014.Logic.Core
 
         public IPoint Cross(ILine other)
         {
-            if (Start.X != End.X && other.Start.X != other.End.X)
+            ILine line = null;
+            double? x = null;
+
+
+            if (Start.X == End.X)
             {
-                var eq0 = new LineEquation(this);
-                var eq1 = new LineEquation(other);
-
-                if (eq0.K != eq1.K)
-                {
-                    var x = (eq1.B - eq0.B) / (eq0.K - eq1.K);
-
-                    if (x.ContainedBy(Start.X, End.X))
-                    {
-                        return new Point(x, eq0.Eval(x));
-                    }
-                }
+                line = other;
+                x = Start.X;
+            }
+            else if (other.Start.X == other.End.X)
+            {
+                line = this;
+                x = other.Start.X;
             }
             else
             {
-                ILine line = null;
-                double? x = null;
+                var equation = new LineEquation(this);
+                var otherEquation = new LineEquation(other);
 
-                if (Start.X != End.X)
+                if (equation.K != otherEquation.K)
                 {
-                    line = other;
-                    x = Start.X;
-                }
-                else if (other.Start.X != other.End.X)
-                {
+                    x = (otherEquation.B - equation.B) / (equation.K - otherEquation.K);
                     line = this;
-                    x = other.Start.X;
-                }
-
-                if (line != null && x.HasValue && x.Value.ContainedBy(line.Start.X, line.End.X))
-                {
-                    return new Point(x.Value, new LineEquation(line).Eval(x.Value));
                 }
             }
-            return null;
+
+            return line != null && x.HasValue && x.Value.ContainedBy(line.Start.X, line.End.X)
+                       ? new Point(x.Value, new LineEquation(line).Eval(x.Value))
+                       : null;
         }
     }
 }
