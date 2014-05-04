@@ -26,5 +26,49 @@ namespace Asdo.Mandala2014.Logic.Core
         {
             get { return y; }
         }
+
+        public bool Equals(IPoint other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return this.X.Equals(other.X) && this.X.Equals(other.Y);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (this.x.GetHashCode() * 397) ^ this.y.GetHashCode();
+            }
+        }
+
+        public static bool operator ==(Point left, Point right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Point left, Point right)
+        {
+            return !Equals(left, right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            return obj is Point && Equals((Point)obj);
+        }
     }
 }
