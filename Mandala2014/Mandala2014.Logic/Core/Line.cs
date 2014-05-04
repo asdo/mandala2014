@@ -5,6 +5,7 @@
     public sealed class Line : ILine
     {
         private readonly IPoint start;
+
         private readonly IPoint end;
 
         public Line(IPoint start, IPoint end)
